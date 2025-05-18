@@ -4,47 +4,51 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     flex-direction: column;
-    background-color: #c394e7;
+    background-color: #1c1b1b;
 }
 
-/* #gameboard initializes the css to id gameboard */
+/* Responsive game board */
 #gameboard {
-    width: 600px;
-    height: 600px;
-    background-color: black;
+    width: 90vmin;
+    height: 90vmin;
+    max-width: 600px;
+    max-height: 600px;
+    background-color: white;
     display: flex;
     flex-wrap: wrap;
-/*   flex-wrap: wrap tells the items in the container to go to the next lien when they run out of spaces. */
-    border: solid 1px black;
+    border: solid 1px white;
 }
 
-/* .square initializes the css to class square */
+/* Each square takes 1/3 of board size */
 .square {
-    width: 200px;
-    height: 200px;
-    background-color: white;
-    border: solid 2px black;
+    width: 33.33%;
+    height: 33.33%;
+    background-color: black;
+    border: solid 2px white;
     box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
+/* Circle and Cross scale with cell */
 .circle {
-    width: 150px;
-    height: 150px;
+    width: 60%;
+    height: 60%;
     border-radius: 50%;
-    border: 26px solid blue;
+    border: solid 10px blue;
     box-sizing: border-box;
 }
 
 .cross {
-    width: 150px;
-    height: 150px;
+    width: 60%;
+    height: 60%;
     box-sizing: border-box;
     transform: rotate(45deg);
+    position: relative;
 }
 
 .cross:before, .cross:after {
@@ -55,25 +59,30 @@ body {
 
 .cross:before {
     left: 50%;
-    width: 30%;
+    width: 20%;
     height: 100%;
-    margin-left: -15%;
+    margin-left: -10%;
 }
 
 .cross:after {
     top: 50%;
     width: 100%;
-    height: 30%;
-    margin-top: -15%;
+    height: 20%;
+    margin-top: -10%;
 }
 
 #heading {
     font-family: "cursive", Georgia;
-    font-size: 80px;
+    font-size: clamp(32px, 8vw, 80px);
+    color: white;
+    text-align: center;
+    margin: 20px 0 10px 0;
 }
 
 #info {
     font-family: "cursive", Georgia;
-    font-size: 40px;
-    margin-top: 20px;
+    font-size: clamp(20px, 5vw, 40px);
+    margin-top: 2vh;
+    color: white;
+    text-align: center;
 }
