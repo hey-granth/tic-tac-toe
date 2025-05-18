@@ -1,0 +1,79 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    background-color: #c394e7;
+}
+
+/* #gameboard initializes the css to id gameboard */
+#gameboard {
+    width: 600px;
+    height: 600px;
+    background-color: black;
+    display: flex;
+    flex-wrap: wrap;
+/*   flex-wrap: wrap tells the items in the container to go to the next lien when they run out of spaces. */
+    border: solid 1px black;
+}
+
+/* .square initializes the css to class square */
+.square {
+    width: 200px;
+    height: 200px;
+    background-color: white;
+    border: solid 2px black;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 26px solid blue;
+    box-sizing: border-box;
+}
+
+.cross {
+    width: 150px;
+    height: 150px;
+    box-sizing: border-box;
+    transform: rotate(45deg);
+}
+
+.cross:before, .cross:after {
+    content: "";
+    position: absolute;
+    background-color: red;
+}
+
+.cross:before {
+    left: 50%;
+    width: 30%;
+    height: 100%;
+    margin-left: -15%;
+}
+
+.cross:after {
+    top: 50%;
+    width: 100%;
+    height: 30%;
+    margin-top: -15%;
+}
+
+#heading {
+    font-family: "cursive", Georgia;
+    font-size: 80px;
+}
+
+#info {
+    font-family: "cursive", Georgia;
+    font-size: 40px;
+    margin-top: 20px;
+}
