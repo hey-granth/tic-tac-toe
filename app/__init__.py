@@ -3,7 +3,10 @@ from flask import Flask
 from flask_socketio import SocketIO
 from flask_cors import CORS
 
-socketio = SocketIO(cors_allowed_origins="*")
+# redis message queue config
+REDIS_URL = 'redis://localhost:6379/'
+
+socketio = SocketIO(cors_allowed_origins="*", message_queue=REDIS_URL)
 
 def create_app():
     base_dir = os.path.abspath(os.path.dirname(__file__))  # path to app/

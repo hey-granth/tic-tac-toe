@@ -49,6 +49,7 @@ pyproject-hooks==1.2.0
 python-engineio==4.12.1
 python-socketio==5.13.0
 rapidfuzz==3.13.0
+redis==6.1.0
 requests==2.32.3
 requests-toolbelt==1.0.0
 secretstorage==3.3.3

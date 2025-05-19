@@ -1,4 +1,4 @@
-from .game_state import games
+from .game_state import save_game, load_game, delete_game
 from flask import Blueprint, jsonify, request, render_template, current_app
 import random, string
 
@@ -16,28 +16,36 @@ def index():
 @bp.route('/create_game', methods=['POST'])
 def create_game():
     game_code = generate_code()
-    games[game_code] = {'players': [], 'state': 'waiting'}
+    save_game(game_code, {'players': [], 'state': 'waiting'})
     return jsonify({'game_code': game_code}), 201
 
 @bp.route('/join_game/<game_code>', methods=['POST'])
 def join_game(game_code):
-    if game_code not in games:
+    game = load_game(game_code)
+    if not game:
         return jsonify({'error': 'Game not found'}), 404
 
     player_id = generate_code(8)
-    games[game_code]['players'].append(player_id)
+    game['players'].append(player_id)
+    save_game(game_code, game)
     return jsonify({'player_id': player_id}), 200
 
 
 @bp.route('/leave_game/<game_code>', methods=['POST'])
 def leave_game(game_code):
-    if game_code not in games:
+    game = load_game(game_code)
+    if not game:
         return jsonify({'error': 'Game not found'}), 404
 
     player_id = request.json.get('player_id')
-    if player_id not in games[game_code]['players']:
+    if player_id not in game['players']:
         return jsonify({'error': 'Player not found in game'}), 404
 
-    games[game_code]['players'].remove(player_id)
-    return jsonify({'message': 'Player left the game'}), 200
+    game['players'].remove(player_id)
 
+    if not game['players']:
+        delete_game(game_code)
+    else:
+        save_game(game_code, game)
+
+    return jsonify({'message': 'Player left the game'}), 200

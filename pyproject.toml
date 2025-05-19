@@ -73,7 +73,8 @@ dependencies = [
     "eventlet (==0.40.0)",
     "greenlet (==3.2.2)",
     "flask-cors (==6.0.0)",
-    "gunicorn (==23.0.0)"
+    "gunicorn (==23.0.0)",
+    "redis (>=6.1.0,<7.0.0)"
 ]
 
 
