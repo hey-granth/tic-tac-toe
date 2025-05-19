@@ -4,9 +4,9 @@ from flask_socketio import SocketIO
 from flask_cors import CORS
 
 # redis message queue config
-REDIS_URL = 'redis://localhost:6379/'
+REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/')
 
-socketio = SocketIO(cors_allowed_origins="*", message_queue=REDIS_URL)
+socketio = SocketIO(cors_allowed_origins="*", message_queue=REDIS_URL, async_mode='eventlet')
 
 def create_app():
     base_dir = os.path.abspath(os.path.dirname(__file__))  # path to app/

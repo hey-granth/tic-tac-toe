@@ -1,8 +1,9 @@
-import json, redis
+import json
+from redis import Redis
 from os import getenv
 
 REDIS_URL = getenv("REDIS_URL", "redis://localhost:6379/")
-r = redis.Redis.from_url(REDIS_URL, decode_responses=True)
+r = Redis.from_url(REDIS_URL, decode_responses=True, ssl=REDIS_URL.startswith("rediss://") )
 
 def save_game(code, data, expiry=3600):
     r.set(code, json.dumps(data), ex=expiry)
