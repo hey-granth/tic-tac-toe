@@ -6,13 +6,21 @@
               content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Tic-Tac-Toe</title>
-        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     </head>
     <body>
         <h1 id="heading">Tic Tac Toe!</h1>
+
+        <input id="invite-code" placeholder="Enter Invite Code" />
+        <button id="create-btn">Create Game</button>
+        <button id="join-btn">Join Game</button>
+
         <div id="gameboard"></div>
         <p id="info"></p>
-        <script src="app.js"></script>
+
+        <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+        <script src="{{ url_for('static', filename='app.js') }}"></script>
+
         <button id="reload-btn">Play Again!</button>
     </body>
 </html>

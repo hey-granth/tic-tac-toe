@@ -103,3 +103,25 @@ body {
     background-color: #1c1b1b;
     color: #ffffff;
 }
+
+#join-btn, #create-btn {
+    padding: 10px 20px;
+    font-size: 18px;
+    font-family: "cursive", Georgia;
+    background-color: #ffffff;
+    border: 2px solid #ffffff;
+    color: #1c1b1b;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    margin-bottom: 1%;
+}
+
+#invite-code {
+    font-family: "cursive", Georgia;
+    font-size: clamp(20px, 5vw, 40px);
+    margin-top: 2vh;
+    color: white;
+    text-align: center;
+    margin-bottom: 1%;
+}
