@@ -1,60 +1,102 @@
-# 🟢❌ Tic Tac Toe — Responsive & Minimal
 
-A simple, responsive, and clean implementation of the classic Tic Tac Toe game using **HTML**, **CSS**, and **JavaScript**. Built with scalability and multiplayer in mind, this version supports smooth UI and is optimized for both desktop and mobile.
+# 🕹️ Real-time Multiplayer Tic Tac Toe
+
+A web-based real-time multiplayer Tic Tac Toe game built with **Flask**, **Flask-SocketIO**, and **Eventlet**. Play with friends using an invite code – no registration required!
 
 ---
 
-## ✨ Features
+## Deployed Services:
+- Static - [Vercel Link](https://tic-tac-toe-mu-rouge.vercel.app/)
+- Dynamic - [Render Link](https://tic-tac-toe-8wlk.onrender.com/)
+---
 
-- ✔️ Click-to-play 3x3 grid
-- 🔁 Alternating turns (Circle vs. Cross)
-- 🧠 Win detection logic
-- 🔒 Prevents additional clicks after win
-- 📱 Fully responsive layout (looks great on phones)
-- 💅 Minimal design with smooth UX
+## 🚀 Features
+
+- 🔁 Real-time two-player game using WebSockets
+- 🎮 Unique invite codes for private game rooms
+- 🧠 Game state management with Python
+- ⚡ Fast and lightweight with Flask + Socket.IO
+- 🎨 Simple and clean frontend using HTML, CSS, and vanilla JS
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **HTML** — Structure of the game
-- **CSS** — Responsive and modern design
-- **JavaScript** — Game logic and interactions
+- **Backend:** Flask, Flask-SocketIO, Eventlet
+- **Frontend:** HTML, CSS, JavaScript (Socket.IO client)
+- **Deployment:** Render
 
 ---
 
-## 📁 File Structure
+## 📁 Project Structure
 
-├── index.html # HTML layout
-├── styles.css # Styling & responsiveness
-└── app.js # Game logic (JS)
-
-
----
-
-## 🚀 How to Run
-
-1. Clone this repo or download the files.
-2. Open `index.html` in any modern web browser.
-3. Start playing!
-
----
-
-## 📦 Future Scope
-
-- 🧑‍🤝‍🧑 Multiplayer support (via WebSocket & Flask backend)
-- 🎮 Game restart button
-- 🌐 Online deployment (GitHub Pages / Vercel)
-
----
-
-## 📃 License
-
-This project is licensed under the [MIT License](LICENSE).
+```
+.
+├── app
+│   ├── game_state.py
+│   ├── __init__.py
+│   ├── routes.py
+│   └── sockets.py
+├── poetry.lock
+├── Procfile
+├── pyproject.toml
+├── README.md
+├── requirements.txt
+├── run.py
+├── static
+│   ├── app.js
+│   ├── socket.io.min.js
+│   └── styles.css
+└── templates
+    └── index.html
+```
 
 ---
 
-## 🙌 Acknowledgments
+## 🧪 Local Development
 
-Made with ❤️ by [Granth Agarwal] — improving one pixel at a time.
+### 1. Clone the repo
 
+```bash
+git clone https://github.com/your-username/tic-tac-toe.git
+cd tic-tac-toe
+```
+
+### 2. Install dependencies
+
+If using **Poetry**:
+
+```bash
+poetry install
+poetry shell
+```
+
+Or with **pip**:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Run the app
+
+```bash
+python run.py
+```
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome. For major changes, please open an issue first.
+
+---
+
+## 📄 License
+
+MIT License
+
+---
+
+## 👨‍💻 Author
+
+Built by [Granth Agarwal](https://github.com/hey-granth) 🔥
