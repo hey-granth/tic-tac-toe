@@ -1,10 +1,18 @@
 import json
-from redis import Redis
+from redis import Redis, connection
 from os import getenv
 
 REDIS_URL = getenv("REDIS_URL", "redis://localhost:6379/")
-r = Redis.from_url(REDIS_URL, decode_responses=True, ssl=REDIS_URL.startswith("rediss://") )
 
+# Upstash workaround: Use SSL=True but apply it via `ConnectionPool` options
+connection_kwargs = {
+    "decode_responses": True
+}
+
+if REDIS_URL.startswith("rediss://"):
+    connection_kwargs["connection_class"] = connection.SSLConnection
+
+r = Redis.from_url(REDIS_URL, **connection_kwargs)
 def save_game(code, data, expiry=3600):
     r.set(code, json.dumps(data), ex=expiry)
 
