@@ -3,6 +3,7 @@
 document.addEventListener("DOMContentLoaded", async function () {
     const gameBoard = document.querySelector("#gameboard");
     const infoDisplay = document.querySelector("#info");
+    const socket = io();
     const startCells = [
         "", "", "",
         "", "", "",
@@ -68,7 +69,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         window.location.reload();
     });
 
-    const socket = io("http://localhost:5000");
     let gameCode = "";
     let isPlayerTurn = true;
 
