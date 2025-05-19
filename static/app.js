@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     let isPlayerTurn = true;
 
     document.getElementById("create-btn").addEventListener("click", async () => {
-        const res = await fetch("http://localhost:5000/create_game", {method: "POST"});
+        const res = await fetch("/create_game", {method: "POST"});
         const data = await res.json();
         gameCode = data.game_code;
         alert("Share this code with a friend: " + gameCode);
