@@ -18,7 +18,7 @@
         <div id="gameboard"></div>
         <p id="info"></p>
 
-        <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+        <script src="{{ url_for('static', filename='socket.io.min.js') }}"></script>
         <script src="{{ url_for('static', filename='app.js') }}"></script>
 
         <button id="reload-btn">Play Again!</button>
