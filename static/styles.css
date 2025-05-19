@@ -87,7 +87,7 @@ body {
     text-align: center;
 }
 
-#reload-btn {
+#reload-btn, #leave-btn {
     padding: 10px 20px;
     font-size: 18px;
     font-family: "cursive", Georgia;
@@ -97,9 +97,10 @@ body {
     cursor: pointer;
     border-radius: 8px;
     transition: all 0.3s ease;
+    margin-bottom: 1%;
 }
 
-#reload-btn:hover {
+#reload-btn:hover, #leave-btn:hover, #create-btn:hover, #leave-btn:active, #leave-btn:active:hover, #join-btn:hover, #join-btn:active, #create-btn:active {
     background-color: #1c1b1b;
     color: #ffffff;
 }

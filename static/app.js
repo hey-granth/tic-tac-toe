@@ -91,6 +91,18 @@ document.addEventListener("DOMContentLoaded", async function () {
         infoDisplay.textContent = "Joining game...";
     });
 
+    document.getElementById("leave-btn").addEventListener("click", () => {
+        if (!gameCode) {
+            infoDisplay.textContent = "No game to leave.";
+            return;
+        }
+        socket.emit("leave_game", {game_code: gameCode});
+        gameActive = false;
+        setBoardEnabled(false);
+        infoDisplay.textContent = "You left the game.";
+        gameCode = "";
+    });
+
     socket.on("joined", (data) => {
         const myId = socket.id;
         isPlayerTurn = data.players[0] === myId;
@@ -114,6 +126,17 @@ document.addEventListener("DOMContentLoaded", async function () {
         document.getElementById("info").textContent = "It's " + go + "'s turn";
         isPlayerTurn = true;
         setBoardEnabled(isPlayerTurn && gameActive);
+    });
+
+    socket.on("left_game", (data) => {
+        infoDisplay.textContent = data.message || "You left the game.";
+        gameActive = false;
+        setBoardEnabled(false);
+        gameCode = "";
+    });
+
+    socket.on("error", (data) => {
+        infoDisplay.textContent = data.message || "An error occurred.";
     });
 
     function addGo(e) {

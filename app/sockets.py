@@ -10,12 +10,13 @@ def register_socketio_events(socketio):
         if game_code not in games:
             emit('error', {'message': 'Game not found'})
             return
-        if len(games[game_code]) >=2:
+        if len(games[game_code]['players']) >= 2:
             emit('error', {'message': 'Game is full'})
             return
 
         join_room(game_code)
-        games[game_code]['players'].append(sid)
+        if sid not in games[game_code]['players']:
+            games[game_code]['players'].append(sid)
         emit('joined_game', {'message': f'Player {sid} joined game {game_code}'}, room=game_code)
 
     @socketio.on('leave_game')
@@ -37,3 +38,4 @@ def register_socketio_events(socketio):
     def handle_move(data):
         game_code = data.get("game_code")
         emit("move", data, room=game_code, include_self=False)
+
