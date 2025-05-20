@@ -25,6 +25,11 @@ def join_game(game_code):
     if not game:
         return jsonify({'error': 'Game not found'}), 404
 
+    if len(game['players']) >= 2:
+        return jsonify({'error': 'Game is full'}), 403
+
+
+
     player_id = generate_code(8)
     game['players'].append(player_id)
     save_game(game_code, game)

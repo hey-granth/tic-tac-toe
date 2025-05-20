@@ -4,23 +4,27 @@ document.addEventListener("DOMContentLoaded", async function () {
     const gameBoard = document.querySelector("#gameboard");
     const infoDisplay = document.querySelector("#info");
     const socket = io();
-    const startCells = [
-        "", "", "",
-        "", "", "",
-        "", "", "",
-    ];
+
+    // Persistent player ID
+    let playerId = localStorage.getItem("player_id");
+    if (!playerId) {
+        playerId = crypto.randomUUID();
+        localStorage.setItem("player_id", playerId);
+    }
+
+    const startCells = ["", "", "", "", "", "", "", "", ""];
     let go = "circle";
     let gameActive = false;
+    let gameCode = "";
+    let isPlayerTurn = true;
 
     infoDisplay.textContent = "Circle Goes First";
 
     function setBoardEnabled(enabled) {
         const allSquares = document.querySelectorAll(".square");
         allSquares.forEach(square => {
-            if (enabled) {
-                if (!square.hasChildNodes()) {
-                    square.addEventListener('click', addGo);
-                }
+            if (enabled && !square.hasChildNodes()) {
+                square.addEventListener('click', addGo);
             } else {
                 square.removeEventListener('click', addGo);
             }
@@ -29,11 +33,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     function createBoard() {
         gameBoard.innerHTML = "";
-        startCells.forEach((cell, index) => {
+        startCells.forEach((_, index) => {
             const cellElement = document.createElement("div");
             cellElement.classList.add("square");
             cellElement.id = index;
-            cellElement.addEventListener('click', addGo);
+            cellElement.addEventListener("click", addGo);
             gameBoard.append(cellElement);
         });
         setBoardEnabled(false);
@@ -49,18 +53,18 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         winningCombos.forEach(array => {
             const circleWins = array.every(cell => allSquares[cell].firstChild?.classList.contains("circle"));
+            const crossWins = array.every(cell => allSquares[cell].firstChild?.classList.contains("cross"));
 
             if (circleWins) {
                 infoDisplay.textContent = "Circle Wins!";
-                allSquares.forEach(square => square.replaceWith(square.cloneNode(true)));
+                gameActive = false;
+                setBoardEnabled(false);
             }
-        });
 
-        winningCombos.forEach(array => {
-            const crossWins = array.every(cell => allSquares[cell].firstChild?.classList.contains("cross"));
             if (crossWins) {
                 infoDisplay.textContent = "Cross Wins!";
-                allSquares.forEach(square => square.replaceWith(square.cloneNode(true)));
+                gameActive = false;
+                setBoardEnabled(false);
             }
         });
     }
@@ -69,25 +73,21 @@ document.addEventListener("DOMContentLoaded", async function () {
         window.location.reload();
     });
 
-    let gameCode = "";
-    let isPlayerTurn = true;
-
     document.getElementById("create-btn").addEventListener("click", async () => {
-        const res = await fetch("/create_game", {method: "POST"});
+        const res = await fetch("/create_game", { method: "POST" });
         const data = await res.json();
         gameCode = data.game_code;
         alert("Share this code with a friend: " + gameCode);
-        socket.emit("join_game", {game_code: gameCode});
+        socket.emit("join_game", { game_code: gameCode, player_id: playerId });
         createBoard();
-        setBoardEnabled(false);
         infoDisplay.textContent = "Waiting for opponent to join...";
     });
 
     document.getElementById("join-btn").addEventListener("click", () => {
         gameCode = document.getElementById("invite-code").value;
-        socket.emit("join_game", {game_code: gameCode});
+        if (!gameCode) return alert("Please enter a code to join.");
+        socket.emit("join_game", { game_code: gameCode, player_id: playerId });
         createBoard();
-        setBoardEnabled(false);
         infoDisplay.textContent = "Joining game...";
     });
 
@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             infoDisplay.textContent = "No game to leave.";
             return;
         }
-        socket.emit("leave_game", {game_code: gameCode});
+        socket.emit("leave_game", { game_code: gameCode, player_id: playerId });
         gameActive = false;
         setBoardEnabled(false);
         infoDisplay.textContent = "You left the game.";
@@ -104,10 +104,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     socket.on("joined", (data) => {
-        const myId = socket.id;
-        isPlayerTurn = data.players[0] === myId;
-        go = isPlayerTurn ? "circle" : "cross";
+        const players = data.players || [];
+        go = players[0] === playerId ? "circle" : "cross";
+        isPlayerTurn = go === "circle";
         gameActive = true;
+
         setBoardEnabled(isPlayerTurn);
         infoDisplay.textContent = isPlayerTurn
             ? "You go first (Circle)"
@@ -129,7 +130,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     socket.on("left_game", (data) => {
-        infoDisplay.textContent = data.message || "You left the game.";
+        infoDisplay.textContent = data.message || "Opponent left the game.";
         gameActive = false;
         setBoardEnabled(false);
         gameCode = "";
@@ -148,7 +149,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         cell.appendChild(piece);
         cell.removeEventListener("click", addGo);
 
-        socket.emit("move", {code: gameCode, index: cell.id, player: go});
+        socket.emit("move", { code: gameCode, index: cell.id, player: go });
         go = go === "circle" ? "cross" : "circle";
         document.getElementById("info").textContent = "It's " + go + "'s turn";
         isPlayerTurn = false;
